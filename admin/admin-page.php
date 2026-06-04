@@ -239,15 +239,6 @@ function wynk_cs_view_dashboard(): void {
 								);
 								?>
 							</span>
-							<span class="wynk-pill">
-								<?php
-								printf(
-									/* translators: %d: curve intensity value */
-									esc_html__( 'Curve %d', 'webwynk-curve-slider' ),
-									absint( $curve )
-								);
-								?>
-							</span>
 						</div>
 
 						<?php /* ── Action buttons ──────────────────────── */ ?>
@@ -467,29 +458,6 @@ function wynk_cs_view_edit( int $post_id ): void {
 						</div>
 					</div>
 
-					<?php /* Curve ──────────────────────────────────── */ ?>
-					<div class="wynk-field wynk-range-row">
-						<div class="wynk-range-header">
-							<label for="wynk-curve" class="wynk-label"><?php esc_html_e( 'Curve Intensity', 'webwynk-curve-slider' ); ?></label>
-							<span class="wynk-range-value" id="wynk-curve-val"><?php echo absint( $curve ); ?></span>
-						</div>
-						<input
-							type="range"
-							id="wynk-curve"
-							name="curve"
-							min="0"
-							max="50"
-							step="1"
-							value="<?php echo absint( $curve ); ?>"
-							aria-valuenow="<?php echo absint( $curve ); ?>"
-							aria-valuemin="0"
-							aria-valuemax="50"
-						>
-						<div class="wynk-range-labels">
-							<span><?php esc_html_e( 'Flat', 'webwynk-curve-slider' ); ?></span>
-							<span><?php esc_html_e( 'Very curved', 'webwynk-curve-slider' ); ?></span>
-						</div>
-					</div>
 
 					<?php /* Gap ────────────────────────────────────── */ ?>
 					<div class="wynk-field wynk-range-row">

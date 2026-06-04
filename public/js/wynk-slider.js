@@ -201,6 +201,9 @@
       targetVisible = settings.desktopVisible || 8;
     }
 
+    // ── Auto-curve: compute gentle curve coefficient ──────────
+    var autoCurve = computeAutoCurve(targetVisible, ctx.width);
+
     // ── World-unit math ────────────────────────────────────
     // getWorldWidth returns pixels-per-world-unit; invert to get world-per-pixel.
     var pxPerUnit  = getWorldWidth(ctx.camera, ctx.el);
@@ -248,7 +251,7 @@
       var isSolid = !imgData.url;
       var mat = new THREE.ShaderMaterial({
         uniforms: {
-          curve:        { value: settings.curve },
+          curve:        { value: autoCurve },
           tex:          { value: new THREE.Texture() },
           solidColor:   { value: new THREE.Color(imgData.color || '#c0c0c0') },
           useSolidColor:{ value: isSolid ? 1.0 : 1.0}, // start solid; swap on load
@@ -493,6 +496,43 @@
    */
   function clamp(v, min, max) {
     return Math.max(min, Math.min(max, v));
+  }
+
+  // ============================================================
+  // Helper: computeAutoCurve
+  // ============================================================
+
+  /**
+   * Compute a gentle, device-responsive curve coefficient automatically.
+   *
+   * The formula produces a subtle arc that matches the desired look:
+   *   autoCurve = CURVE_BASE × (5 / targetVisible) × deviceFactor
+   *
+   * Where:
+   *   CURVE_BASE   = 8  (tuned to produce a gentle arc at 5 visible images)
+   *   targetVisible = number of images visible in the viewport at once
+   *   deviceFactor = 1.0 (desktop) | 0.8 (tablet) | 0.6 (mobile)
+   *                  Dampens the effect on smaller screens where the
+   *                  quadratic dist² term is larger relative to screen size.
+   *
+   * Result is clamped to [2, 14] so it is never completely flat or extreme.
+   *
+   * @param  {number} targetVisible  Images visible at once (from responsive settings).
+   * @param  {number} viewportWidth  Current slider width in px.
+   * @return {number}               Curve uniform value.
+   */
+  function computeAutoCurve(targetVisible, viewportWidth) {
+    var CURVE_BASE   = 8;
+    var deviceFactor = 1.0;
+
+    if (viewportWidth <= 480) {
+      deviceFactor = 0.6;
+    } else if (viewportWidth <= 1024) {
+      deviceFactor = 0.8;
+    }
+
+    var raw = CURVE_BASE * (5 / targetVisible) * deviceFactor;
+    return clamp(raw, 2, 14);
   }
 
   // ============================================================
