@@ -42,7 +42,7 @@
     '  vUV = uv;',
     '  vec3 pos = position;',
     '  float dist = abs((modelMatrix * vec4(position, 1.0)).x);',
-    '  pos.y *= 1.0 + (curve / 100.0) * pow(dist, 2.0);',
+    '  pos.y += (curve / 100.0) * pow(dist, 2.0);',
     '  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);',
     '}'
   ].join('\n');
