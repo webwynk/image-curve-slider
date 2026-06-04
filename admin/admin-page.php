@@ -462,7 +462,7 @@ function wynk_cs_view_edit( int $post_id ): void {
 					<?php /* Gap ────────────────────────────────────── */ ?>
 					<div class="wynk-field wynk-range-row">
 						<div class="wynk-range-header">
-							<label for="wynk-gap" class="wynk-label"><?php esc_html_e( 'Image Gap (%)', 'webwynk-curve-slider' ); ?></label>
+							<label for="wynk-gap" class="wynk-label"><?php esc_html_e( 'Image Gap (px)', 'webwynk-curve-slider' ); ?></label>
 							<span class="wynk-range-value" id="wynk-gap-val"><?php echo absint( $gap ); ?></span>
 						</div>
 						<input

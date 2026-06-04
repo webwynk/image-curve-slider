@@ -320,15 +320,7 @@ window.WynkAdmin = (function ($, THREE) {
       return;
     }
 
-    // ── Hot-update path ────────────────────────────────────────
-    // Update ShaderMaterial uniforms (curve) in-place — no GPU rebuild.
-    if (ctx.planes) {
-      ctx.planes.forEach(function (plane) {
-        if (plane.material && plane.material.uniforms && plane.material.uniforms.curve) {
-          plane.material.uniforms.curve.value = settings.curve;
-        }
-      });
-    }
+
 
     // Propagate all other settings to the running animation loop.
     if (ctx.data && ctx.data.settings) {
@@ -389,7 +381,7 @@ window.WynkAdmin = (function ($, THREE) {
 
     return {
       speed:          parseInt(document.getElementById('wynk-speed').value,  10) || 30,
-      curve:          parseInt(document.getElementById('wynk-curve').value,  10) || 12,
+      curve:          0,
       gap:            parseInt(document.getElementById('wynk-gap').value,    10) || 10,
       height:         parseInt(document.getElementById('wynk-height').value, 10) || 400,
       direction:      dirChecked ? dirChecked.value : 'left',
@@ -433,7 +425,7 @@ window.WynkAdmin = (function ($, THREE) {
       title:           nameEl ? nameEl.value.trim() : '',
       images:          JSON.stringify(state.imageIds),
       speed:           values.speed,
-      curve:           values.curve,
+      curve:           0,
       gap:             values.gap,
       height:          values.height,
       direction:       values.direction,
@@ -784,13 +776,14 @@ window.WynkAdmin = (function ($, THREE) {
   function init() {
 
     // ── Range sliders: live value badge update ─────────────────
-    ['speed', 'curve', 'gap'].forEach(function (name) {
+    ['speed', 'gap'].forEach(function (name) {
       var slider  = document.getElementById('wynk-' + name);
       var display = document.getElementById('wynk-' + name + '-val');
       if (slider && display) {
         slider.addEventListener('input', function () {
           display.textContent = this.value;
-          schedulePreviewRefresh(false); // settings only → hot-update
+          var rebuild = (name === 'gap'); // gap changes plane width scale, requiring rebuild
+          schedulePreviewRefresh(rebuild);
         });
       }
     });
@@ -807,18 +800,18 @@ window.WynkAdmin = (function ($, THREE) {
       }
     });
 
-    // ── Height input → hot-update preview ─────────────────────
+    // ── Height input → force rebuild preview ──────────────────
     var heightEl = document.getElementById('wynk-height');
     if (heightEl) {
       heightEl.addEventListener('input', function () {
-        schedulePreviewRefresh(false);
+        schedulePreviewRefresh(true); // height changed → rebuild to update renderer size and camera aspect
       });
     }
 
-    // ── Direction radios → hot-update preview ─────────────────
+    // ── Direction radios → force rebuild preview ──────────────
     document.querySelectorAll('input[name="direction"]').forEach(function (radio) {
       radio.addEventListener('change', function () {
-        schedulePreviewRefresh(false);
+        schedulePreviewRefresh(true); // direction changed → rebuild to correctly reposition plane coordinates
       });
     });
 

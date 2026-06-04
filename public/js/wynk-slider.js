@@ -184,7 +184,6 @@
 
     if (!images || images.length === 0) return;
 
-    var gap     = settings.gap / 100;
     var dirSign = settings.direction === 'right' ? 1 : -1;
 
     // ── Dynamic visible images scaling math ──────────────────
@@ -206,7 +205,9 @@
     var worldW     = ctx.width * unitPerPx;
     var spacing    = worldW / targetVisible;   // world units between plane centres
     ctx.spacing    = spacing;                  // save spacing to context for loop calculations
-    var scale      = spacing / (1 + gap);      // calculated plane width scale factor
+    var gapPx      = settings.gap || 0;
+    var gapWorld   = gapPx * unitPerPx;
+    var scale      = Math.max(0.05 * spacing, spacing - gapWorld);      // calculated plane width scale factor
 
     // Number of planes needed to fill the viewport + image set.
     var planesPerView = Math.ceil(worldW / spacing);
@@ -308,7 +309,6 @@
     ctx.lastTick = now;
 
     var settings = ctx.data.settings;
-    var gap      = settings.gap / 100;
     var dirSign  = settings.direction === 'right' ? 1 : -1;
 
     // ── Advance time ───────────────────────────────────────
