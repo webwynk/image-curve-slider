@@ -3,7 +3,7 @@
  * Plugin Name: Image Curve Slider by WebWynk
  * Plugin URI:  https://webwynk.com
  * Description: A 3D WebGL curved image slider with a full admin dashboard and [wynk_slider] shortcode.
- * Version:     1.0.5
+ * Version:     1.0.6
  * Author:      WebWynk
  * Author URI:  https://webwynk.com
  * Text Domain: webwynk-curve-slider
@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0.0
  * @var string
  */
-define( 'WYNK_CS_VERSION', '1.0.5' );
+define( 'WYNK_CS_VERSION', '1.0.6' );
 
 /**
  * Absolute filesystem path to the plugin root directory, with trailing slash.
