@@ -3,7 +3,8 @@
  *
  * All logic lives inside window.WynkAdmin to prevent global namespace pollution.
  * jQuery is used only for $.post() (required for wp.media integration) and
- * wpColorPicker. All DOM manipulation is vanilla JS.
+ * jQuery is used only for $.post() (required for wp.media integration).
+ * All DOM manipulation is vanilla JS.
  *
  * Exposes:
  *   WynkAdmin.init()           — wire all event listeners (called on DOMContentLoaded)
@@ -312,8 +313,7 @@ window.WynkAdmin = (function ($, THREE) {
         var canvasWrap = previewEl.closest('.wynk-preview-panel__canvas-wrap');
         if (canvasWrap) canvasWrap.style.height = settings.height + 'px';
 
-        // Update the background color for the fades.
-        previewEl.style.setProperty('--wynk-bg', settings.bgColor);
+
 
         state.previewCtx = wynkCurve.initInstance(state.previewInstanceId, previewEl);
       }
@@ -337,7 +337,7 @@ window.WynkAdmin = (function ($, THREE) {
       ctx.data.settings.direction      = settings.direction;
       ctx.data.settings.autoplay       = settings.autoplay;
       ctx.data.settings.pauseHover     = settings.pauseHover;
-      ctx.data.settings.bgColor        = settings.bgColor;
+
       ctx.data.settings.height         = settings.height;
       ctx.data.settings.desktopVisible = settings.desktopVisible;
       ctx.data.settings.tabletVisible  = settings.tabletVisible;
@@ -349,7 +349,6 @@ window.WynkAdmin = (function ($, THREE) {
     if (previewEl) {
       var canvasWrap = previewEl.closest('.wynk-preview-panel__canvas-wrap');
       if (canvasWrap) canvasWrap.style.height = settings.height + 'px';
-      previewEl.style.setProperty('--wynk-bg', settings.bgColor);
     }
   }
 
@@ -383,7 +382,7 @@ window.WynkAdmin = (function ($, THREE) {
    * Matches the shape expected by the Three.js engine.
    *
    * @return {{speed:number, curve:number, gap:number, height:number,
-   *           direction:string, autoplay:boolean, pauseHover:boolean, bgColor:string}}
+   *           direction:string, autoplay:boolean, pauseHover:boolean}}
    */
   function collectFormValues() {
     var dirChecked = document.querySelector('input[name="direction"]:checked');
@@ -396,7 +395,7 @@ window.WynkAdmin = (function ($, THREE) {
       direction:      dirChecked ? dirChecked.value : 'left',
       autoplay:       document.getElementById('wynk-autoplay')    ? document.getElementById('wynk-autoplay').checked    : true,
       pauseHover:     document.getElementById('wynk-pause-hover') ? document.getElementById('wynk-pause-hover').checked : true,
-      bgColor:        document.getElementById('wynk-bg-color')    ? (document.getElementById('wynk-bg-color').value || '#ffffff') : '#ffffff',
+
       desktopVisible: parseInt(document.getElementById('wynk-desktop-visible').value, 10) || 8,
       tabletVisible:  parseInt(document.getElementById('wynk-tablet-visible').value, 10) || 5,
       mobileVisible:  parseInt(document.getElementById('wynk-mobile-visible').value, 10) || 3,
@@ -438,7 +437,7 @@ window.WynkAdmin = (function ($, THREE) {
       gap:             values.gap,
       height:          values.height,
       direction:       values.direction,
-      bg_color:        values.bgColor,
+
       autoplay:        values.autoplay    ? 1 : 0,
       pause_hover:     values.pauseHover  ? 1 : 0,
       desktop_visible: values.desktopVisible,
@@ -651,14 +650,11 @@ window.WynkAdmin = (function ($, THREE) {
       var settings = data.settings;
       var instId   = 'wynk-modal-preview-' + sliderId;
       var height   = settings.height || 400;
-      var bgColor  = settings.bgColor || '#ffffff';
 
       inner.innerHTML =
         '<div id="' + instId + '" class="wynk-curve-slider-wrap"' +
-        ' style="height:' + height + 'px; --wynk-bg:' + escapeAttr(bgColor) + ';">' +
+        ' style="height:' + height + 'px;">' +
           '<canvas class="wynk-curve-canvas"></canvas>' +
-          '<div class="wynk-curve-fade wynk-curve-fade--left"></div>' +
-          '<div class="wynk-curve-fade wynk-curve-fade--right"></div>' +
         '</div>';
 
       window.wynkSliders = window.wynkSliders || {};
@@ -841,19 +837,7 @@ window.WynkAdmin = (function ($, THREE) {
       });
     }
 
-    // ── WP Color Picker ────────────────────────────────────────
-    if (typeof $.fn.wpColorPicker !== 'undefined') {
-      $('.wynk-color-picker').wpColorPicker({
-        change: function () {
-          // wpColorPicker fires 'change' before updating the input value,
-          // so we defer slightly to ensure the value is current.
-          setTimeout(function () { schedulePreviewRefresh(false); }, 10);
-        },
-        clear: function () {
-          schedulePreviewRefresh(false);
-        },
-      });
-    }
+
 
     // ── Media picker button ────────────────────────────────────
     var addImagesBtn = document.getElementById('wynk-add-images');

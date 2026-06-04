@@ -207,6 +207,7 @@
     var unitPerPx  = 1 / pxPerUnit;
     var worldW     = ctx.width * unitPerPx;
     var spacing    = worldW / targetVisible;   // world units between plane centres
+    ctx.spacing    = spacing;                  // save spacing to context for loop calculations
     var scale      = spacing / (1 + gap);      // calculated plane width scale factor
 
     // Number of planes needed to fill the viewport + image set.
@@ -315,19 +316,23 @@
 
     // ── Advance time ───────────────────────────────────────
     if (!ctx.paused && settings.autoplay) {
-      // delta is ms; * 0.001 → seconds; speed * 0.01 → world-units/s scale.
-      ctx.time += delta * 0.001 * (settings.speed * 0.01);
+      // Accumulate elapsed time in seconds.
+      ctx.time += delta * 0.001;
     }
 
     // ── Seamless loop reset ────────────────────────────────
     // setWidth = the world-space width of one full image set.
-    // When scene has scrolled that far, reset to 0 — viewer can't tell.
-    var setWidth = (1 + gap) * ctx.data.images.length;
-    if (Math.abs(ctx.scene.position.x) >= setWidth) {
-      ctx.time = 0;
+    // period = the exact cycle time in seconds for the slider to traverse setWidth.
+    var spacing  = ctx.spacing || 1.0;
+    var setWidth = spacing * ctx.data.images.length;
+    var speedW   = settings.speed * 0.01; // world units per second
+    var period   = setWidth / speedW;
+
+    if (ctx.time >= period) {
+      ctx.time = ctx.time % period;
     }
 
-    ctx.scene.position.x = ctx.time * settings.speed * dirSign * 0.01;
+    ctx.scene.position.x = ctx.time * speedW * dirSign;
 
     ctx.renderer.render(ctx.scene, ctx.camera);
   }

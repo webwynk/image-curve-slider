@@ -81,11 +81,7 @@ function wynk_cs_save_slider(): void {
 	$direction_raw = sanitize_key( wp_unslash( $_POST['direction'] ?? 'left' ) );
 	$direction     = in_array( $direction_raw, array( 'left', 'right' ), true ) ? $direction_raw : 'left';
 
-	// Colour: sanitize_hex_color returns '' for invalid values — fall back to white.
-	$bg_color = sanitize_hex_color( wp_unslash( $_POST['bg_color'] ?? '#ffffff' ) );
-	if ( empty( $bg_color ) ) {
-		$bg_color = '#ffffff';
-	}
+
 
 	// Booleans stored as 0/1 integers.
 	$autoplay = (int) (bool) (int) ( $_POST['autoplay']    ?? 1 );
@@ -137,7 +133,7 @@ function wynk_cs_save_slider(): void {
 	update_post_meta( $post_id, WYNK_CPT::META_HEIGHT,          $height );
 	update_post_meta( $post_id, WYNK_CPT::META_AUTOPLAY,        $autoplay );
 	update_post_meta( $post_id, WYNK_CPT::META_PAUSE_HOVER,     $pause );
-	update_post_meta( $post_id, WYNK_CPT::META_BG_COLOR,        $bg_color );
+
 	update_post_meta( $post_id, WYNK_CPT::META_DESKTOP_VISIBLE, $desktop_visible );
 	update_post_meta( $post_id, WYNK_CPT::META_TABLET_VISIBLE,  $tablet_visible );
 	update_post_meta( $post_id, WYNK_CPT::META_MOBILE_VISIBLE,  $mobile_visible );

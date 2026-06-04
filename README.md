@@ -9,9 +9,9 @@ A high-performance, premium 3D WebGL curved image slider plugin for WordPress. P
 - **3D WebGL Curvature:** Curves images dynamically in 3D space on the GPU using a custom vertex shader.
 - **Continuous Scroll Loop:** Seamless scroll loop that automatically calculates positions and spacing.
 - **Drag-and-Drop Reordering:** Sort and manage images in the WordPress admin panel using standard HTML5 drag-and-drop.
-- **Real-time Live Preview:** Admin panel features a hot-updating live preview canvas that reflects setting changes instantly (color, speed, curve, gaps) without full-page reloads.
+- **Real-time Live Preview:** Admin panel features a hot-updating live preview canvas that reflects setting changes instantly (speed, curve, gaps) without full-page reloads.
 - **Responsive Heights:** Auto-adapts size to container and automatically caps height on mobile screens (≤480px) to maintain design aesthetics.
-- **Fade Overlays:** Left and right edge gradient overlays that blend seamlessly into the configured background color to hide cut-off edges.
+- **Transparent Edge Fades:** Uses modern CSS `mask-image` linear gradients to fade the slider edges to true transparency, blending perfectly with any themed page background.
 - **Performance Optimized:** Debounced resize listener, GPU resource cleanup on destroy, frame-rate independent physics loop using performance delta clamping, and automatic texture minification filtering.
 
 ---
@@ -38,7 +38,7 @@ A high-performance, premium 3D WebGL curved image slider plugin for WordPress. P
 2. Click **Create New Slider**.
 3. Give your slider a descriptive name.
 4. Click **Add / Change Images** to choose images from the WordPress Media Library.
-5. Adjust settings in the left-hand column: speed, curve intensity, gap size, direction, and background color. Observe changes instantly in the **Live Preview** panel on the right.
+5. Adjust settings in the left-hand column: speed, curve intensity, gap size, and direction. Observe changes instantly in the **Live Preview** panel on the right.
 6. Click **Save Slider**. A success notice will appear displaying the unique shortcode.
 
 ### 2. Embedding in Pages/Posts
@@ -59,7 +59,6 @@ When you edit a slider in the administrative panel, the following configurations
 | Control Name | Meta Key | Data Type | Default | Range / Value | Description |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Slider Name** | `post_title` | String | *None* | Non-empty text | Title used to identify the slider in the dashboard. |
-| **Background Color** | `_wynk_bg_color` | Hex String | `#ffffff` | Hex Code (`#000000`–`#ffffff`) | Controls the background color of the canvas container and the edge fade overlays. |
 | **Slider Height** | `_wynk_height` | Integer | `400` | `200` to `800` (pixels) | The desktop height of the slider. Responsive mobile caps apply automatically. |
 | **Images** | `_wynk_images` | JSON Array | `[]` | Array of attachment IDs | Ordered list of WordPress attachment IDs. Drag to reorder. |
 | **Scroll Speed** | `_wynk_speed` | Integer | `30` | `5` to `150` | Speed of the automatic scrolling animation loop. |

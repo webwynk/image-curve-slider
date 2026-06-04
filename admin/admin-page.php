@@ -314,7 +314,7 @@ function wynk_cs_view_edit( int $post_id ): void {
 	$gap             = 10;
 	$height          = 400;
 	$direction       = 'left';
-	$bg_color        = '#ffffff';
+
 	$autoplay        = 1;
 	$pause_hover     = 1;
 	$desktop_visible = 8;
@@ -337,7 +337,7 @@ function wynk_cs_view_edit( int $post_id ): void {
 		$gap             = (int) ( get_post_meta( $post_id, WYNK_CPT::META_GAP,         true ) ?: 10  );
 		$height          = (int) ( get_post_meta( $post_id, WYNK_CPT::META_HEIGHT,      true ) ?: 400 );
 		$direction       =        get_post_meta( $post_id, WYNK_CPT::META_DIRECTION,   true ) ?: 'left';
-		$bg_color        =        get_post_meta( $post_id, WYNK_CPT::META_BG_COLOR,    true ) ?: '#ffffff';
+
 		$autoplay        = (int) ( get_post_meta( $post_id, WYNK_CPT::META_AUTOPLAY,    true ) ?? 1 );
 		$pause_hover     = (int) ( get_post_meta( $post_id, WYNK_CPT::META_PAUSE_HOVER, true ) ?? 1 );
 		$desktop_visible = (int) ( get_post_meta( $post_id, WYNK_CPT::META_DESKTOP_VISIBLE, true ) ?: 8 );
@@ -394,19 +394,7 @@ function wynk_cs_view_edit( int $post_id ): void {
 						>
 					</div>
 
-					<div class="wynk-field wynk-field--row">
-						<label for="wynk-bg-color" class="wynk-label">
-							<?php esc_html_e( 'Background Color', 'webwynk-curve-slider' ); ?>
-						</label>
-						<input
-							type="text"
-							id="wynk-bg-color"
-							name="bg_color"
-							class="wynk-color-picker"
-							value="<?php echo esc_attr( $bg_color ); ?>"
-							data-default-color="#ffffff"
-						>
-					</div>
+
 
 					<div class="wynk-field">
 						<label for="wynk-height" class="wynk-label">
@@ -707,10 +695,8 @@ function wynk_cs_view_edit( int $post_id ): void {
 				</span>
 			</div>
 			<div class="wynk-preview-panel__canvas-wrap" style="height: <?php echo absint( $height ); ?>px;">
-				<div id="wynk-admin-preview" class="wynk-curve-slider-wrap" style="height: 100%; --wynk-bg: <?php echo esc_attr( $bg_color ); ?>;">
+				<div id="wynk-admin-preview" class="wynk-curve-slider-wrap" style="height: 100%;">
 					<canvas id="wynk-preview-canvas" class="wynk-curve-canvas"></canvas>
-					<div class="wynk-curve-fade wynk-curve-fade--left"></div>
-					<div class="wynk-curve-fade wynk-curve-fade--right"></div>
 				</div>
 			</div>
 		</div><!-- .wynk-preview-panel -->

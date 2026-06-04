@@ -83,7 +83,6 @@ class WYNK_Shortcode {
 		// Applied via JS on init; we output the configured value here
 		// and let the engine cap it client-side.
 		$height   = absint( $settings['height'] );
-		$bg_color = esc_attr( $settings['bgColor'] );
 
 		// ── Generate unique instance ID ───────────────────────
 		// Unique per page load per shortcode placement.
@@ -111,7 +110,6 @@ class WYNK_Shortcode {
 						'height'         => $height,
 						'autoplay'       => (bool) $settings['autoplay'],
 						'pauseHover'     => (bool) $settings['pauseHover'],
-						'bgColor'        => $settings['bgColor'],
 						'desktopVisible' => (int) $settings['desktopVisible'],
 						'tabletVisible'  => (int) $settings['tabletVisible'],
 						'mobileVisible'  => (int) $settings['mobileVisible'],
@@ -127,13 +125,11 @@ class WYNK_Shortcode {
 		<div
 			id="<?php echo esc_attr( $instance_id ); ?>"
 			class="wynk-curve-slider-wrap"
-			style="height:<?php echo absint( $height ); ?>px; --wynk-bg:<?php echo esc_attr( $settings['bgColor'] ); ?>;"
+			style="height:<?php echo absint( $height ); ?>px;"
 			role="region"
 			aria-label="<?php echo esc_attr( get_the_title( $post_id ) ); ?>"
 		>
 			<canvas class="wynk-curve-canvas" aria-hidden="true"></canvas>
-			<div class="wynk-curve-fade wynk-curve-fade--left"  aria-hidden="true"></div>
-			<div class="wynk-curve-fade wynk-curve-fade--right" aria-hidden="true"></div>
 		</div>
 		<?php
 		return ob_get_clean();

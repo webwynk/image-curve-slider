@@ -24,6 +24,22 @@
   /* width:100% lets the element fill its container */
   width:      100%;
   /* height is set inline by PHP (from _wynk_height meta) */
+
+  /* Modern CSS mask to fade edges transparently */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black var(--wynk-fade-width, 80px),
+    black calc(100% - var(--wynk-fade-width, 80px)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black var(--wynk-fade-width, 80px),
+    black calc(100% - var(--wynk-fade-width, 80px)),
+    transparent 100%
+  );
 }
 
 /* ============================================================
@@ -36,54 +52,6 @@
   height:  100%;
   /* Prevent browser anti-aliasing artefact on HiDPI */
   image-rendering: auto;
-}
-
-/* ============================================================
-   Edge-fade overlays
-   (gradient from bg-color to transparent — hides cut-off edges)
-   ============================================================ */
-
-.wynk-curve-slider-wrap .wynk-curve-fade {
-  position:       absolute;
-  top:            0;
-  bottom:         0;
-  width:          var(--wynk-fade-width, 80px);
-  pointer-events: none;   /* clicks pass through to canvas */
-  z-index:        3;
-}
-
-.wynk-curve-slider-wrap .wynk-curve-fade--left {
-  left:       0;
-  background: linear-gradient(
-    to right,
-    var(--wynk-bg, #ffffff) 0%,
-    transparent 100%
-  );
-}
-
-.wynk-curve-slider-wrap .wynk-curve-fade--right {
-  right:      0;
-  background: linear-gradient(
-    to left,
-    var(--wynk-bg, #ffffff) 0%,
-    transparent 100%
-  );
-}
-
-/* ============================================================
-   Responsive — narrow screens
-   ============================================================ */
-
-@media (max-width: 768px) {
-  .wynk-curve-slider-wrap .wynk-curve-fade {
-    width: var(--wynk-fade-width, 50px);
-  }
-}
-
-@media (max-width: 480px) {
-  .wynk-curve-slider-wrap .wynk-curve-fade {
-    width: var(--wynk-fade-width, 30px);
-  }
 }
 
 /* ============================================================

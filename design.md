@@ -72,8 +72,7 @@ wynk-admin.js collects values
     ├─ images (JSON array of IDs)
     ├─ speed, curve, gap, height (integers)
     ├─ direction (string)
-    ├─ autoplay, pause_hover (booleans)
-    └─ bg_color (hex)
+    └─ autoplay, pause_hover (booleans)
     │
     ▼
 AJAX POST → admin-ajax.php → wynk_cs_save_slider
@@ -148,7 +147,6 @@ No custom tables. Uses WordPress native storage:
 | `wp_postmeta` | `_wynk_height` | Integer (px) |
 | `wp_postmeta` | `_wynk_autoplay` | `1`/`0` |
 | `wp_postmeta` | `_wynk_pause_hover` | `1`/`0` |
-| `wp_postmeta` | `_wynk_bg_color` | Hex string |
 | `wp_options` | `wynk_cs_version` | Plugin version |
 
 ---
@@ -311,12 +309,9 @@ WordPress Admin Sidebar
 <!-- Shortcode output -->
 <div id="{instanceId}"
      class="wynk-curve-slider-wrap"
-     style="height:{height}px; --wynk-bg:{bg_color}; --wynk-fade-width:{fadeWidth}px;">
+     style="height:{height}px; --wynk-fade-width:{fadeWidth}px;">
 
   <canvas class="wynk-curve-canvas"></canvas>
-
-  <div class="wynk-curve-fade wynk-curve-fade--left"></div>
-  <div class="wynk-curve-fade wynk-curve-fade--right"></div>
 
 </div>
 ```
@@ -325,8 +320,7 @@ WordPress Admin Sidebar
 
 | Property | Set By | Used By |
 |---|---|---|
-| `--wynk-bg` | PHP shortcode inline style | Left/right fade gradients |
-| `--wynk-fade-width` | JS on init + resize | Fade overlay width |
+| `--wynk-fade-width` | JS on init + resize | Fade overlay mask width |
 
 ---
 

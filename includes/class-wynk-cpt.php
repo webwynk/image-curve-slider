@@ -55,8 +55,7 @@ class WYNK_CPT {
 	/** @var string Pause-on-hover flag — integer 0 or 1. */
 	const META_PAUSE_HOVER = '_wynk_pause_hover';
 
-	/** @var string Background colour — sanitized hex string e.g. '#ffffff'. */
-	const META_BG_COLOR = '_wynk_bg_color';
+
 
 	/** @var string Desktop visible images — integer 3–12. */
 	const META_DESKTOP_VISIBLE = '_wynk_desktop_visible';
@@ -81,7 +80,7 @@ class WYNK_CPT {
 		self::META_HEIGHT          => 400,
 		self::META_AUTOPLAY        => 1,
 		self::META_PAUSE_HOVER     => 1,
-		self::META_BG_COLOR        => '#ffffff',
+
 		self::META_DESKTOP_VISIBLE => 8,
 		self::META_TABLET_VISIBLE  => 5,
 		self::META_MOBILE_VISIBLE  => 3,
@@ -213,11 +212,7 @@ class WYNK_CPT {
 				'description' => 'Pause on hover flag: 1 = on, 0 = off.',
 				'default'     => 1,
 			),
-			self::META_BG_COLOR    => array(
-				'type'        => 'string',
-				'description' => 'Background colour as a hex string.',
-				'default'     => '#ffffff',
-			),
+
 			self::META_DESKTOP_VISIBLE => array(
 				'type'        => 'integer',
 				'description' => 'Desktop visible images count (3-12).',
@@ -398,7 +393,7 @@ class WYNK_CPT {
 	 *
 	 * @since  1.0.0
 	 * @param  int $post_id Slider post ID.
-	 * @return array{speed: int, curve: int, gap: int, direction: string, height: int, autoplay: bool, pauseHover: bool, bgColor: string}
+	 * @return array{speed: int, curve: int, gap: int, direction: string, height: int, autoplay: bool, pauseHover: bool}
 	 */
 	public function get_settings( int $post_id ): array {
 		return array(
@@ -409,7 +404,6 @@ class WYNK_CPT {
 			'height'     => (int) $this->get_meta_value( $post_id, self::META_HEIGHT ),
 			'autoplay'   => (bool) (int) $this->get_meta_value( $post_id, self::META_AUTOPLAY ),
 			'pauseHover'     => (bool) (int) $this->get_meta_value( $post_id, self::META_PAUSE_HOVER ),
-			'bgColor'        => (string) $this->get_meta_value( $post_id, self::META_BG_COLOR ),
 			'desktopVisible' => (int) $this->get_meta_value( $post_id, self::META_DESKTOP_VISIBLE ),
 			'tabletVisible'  => (int) $this->get_meta_value( $post_id, self::META_TABLET_VISIBLE ),
 			'mobileVisible'  => (int) $this->get_meta_value( $post_id, self::META_MOBILE_VISIBLE ),
@@ -488,11 +482,7 @@ class WYNK_CPT {
 		return (int) (bool) $value;
 	}
 
-	/** @internal */
-	public function sanitize_meta_value_wynk_bg_color( $value ): string {
-		$sanitized = sanitize_hex_color( (string) $value );
-		return $sanitized ?: '#ffffff';
-	}
+
 
 	/** @internal */
 	public function sanitize_meta_value_wynk_desktop_visible( $value ): int {
