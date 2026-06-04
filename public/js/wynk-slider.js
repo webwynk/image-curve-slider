@@ -37,12 +37,14 @@
   // The 'curve' uniform maps 0 → flat, 50 → strongly curved.
   var VERTEX_SHADER = [
     'uniform float curve;',
+    'uniform float halfW;',
     'varying vec2 vUV;',
     'void main() {',
     '  vUV = uv;',
     '  vec3 pos = position;',
     '  float dist = abs((modelMatrix * vec4(position, 1.0)).x);',
-    '  pos.y += (curve / 100.0) * pow(dist, 2.0);',
+    '  float normalizedDist = dist / halfW;',
+    '  pos.y += (curve / 100.0) * pow(normalizedDist, 2.0);',
     '  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);',
     '}'
   ].join('\n');
@@ -252,6 +254,7 @@
       var mat = new THREE.ShaderMaterial({
         uniforms: {
           curve:        { value: autoCurve },
+          halfW:        { value: worldW / 2.0 },
           tex:          { value: new THREE.Texture() },
           solidColor:   { value: new THREE.Color(imgData.color || '#c0c0c0') },
           useSolidColor:{ value: isSolid ? 1.0 : 1.0}, // start solid; swap on load
@@ -509,20 +512,20 @@
    *   autoCurve = CURVE_BASE × (5 / targetVisible) × deviceFactor
    *
    * Where:
-   *   CURVE_BASE   = 8  (tuned to produce a gentle arc at 5 visible images)
+   *   CURVE_BASE   = 20 (tuned to produce a gentle arc at 5 visible images)
    *   targetVisible = number of images visible in the viewport at once
    *   deviceFactor = 1.0 (desktop) | 0.8 (tablet) | 0.6 (mobile)
    *                  Dampens the effect on smaller screens where the
    *                  quadratic dist² term is larger relative to screen size.
    *
-   * Result is clamped to [2, 14] so it is never completely flat or extreme.
+   * Result is clamped to [5, 30] so it is never completely flat or extreme.
    *
    * @param  {number} targetVisible  Images visible at once (from responsive settings).
    * @param  {number} viewportWidth  Current slider width in px.
    * @return {number}               Curve uniform value.
    */
   function computeAutoCurve(targetVisible, viewportWidth) {
-    var CURVE_BASE   = 8;
+    var CURVE_BASE   = 20;
     var deviceFactor = 1.0;
 
     if (viewportWidth <= 480) {
@@ -532,7 +535,7 @@
     }
 
     var raw = CURVE_BASE * (5 / targetVisible) * deviceFactor;
-    return clamp(raw, 2, 14);
+    return clamp(raw, 5, 30);
   }
 
   // ============================================================
