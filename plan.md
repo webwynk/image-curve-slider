@@ -17,6 +17,15 @@
 
 ---
 
+## Development Rules
+
+> [!IMPORTANT]
+> **Plugin Versioning:** Whenever any changes are made to the plugin, the version number MUST be updated/bumped in both:
+> 1. The WordPress plugin header in `webwynk-curve-slider.php` (`Version: X.Y.Z`)
+> 2. The `WYNK_CS_VERSION` constant in `webwynk-curve-slider.php`
+
+---
+
 ## Phase Map
 
 ```
