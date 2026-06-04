@@ -104,7 +104,6 @@ class WYNK_Shortcode {
 					'images'   => $images,
 					'settings' => array(
 						'speed'          => (int) $settings['speed'],
-						'curve'          => (int) $settings['curve'],
 						'gap'            => (int) $settings['gap'],
 						'direction'      => (string) $settings['direction'],
 						'height'         => $height,

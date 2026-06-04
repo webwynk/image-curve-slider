@@ -33,11 +33,9 @@ add_action( 'wp_ajax_wynk_cs_save_slider', 'wynk_cs_save_slider' );
  *   title       (string)  — slider name
  *   images      (string)  — JSON-encoded array of attachment IDs
  *   speed       (int)     — 5–150
- *   curve       (int)     — 0–50
  *   gap         (int)     — 0–50
  *   height      (int)     — 200–800
  *   direction   (string)  — 'left' or 'right'
- *   bg_color    (string)  — hex colour e.g. '#ffffff'
  *   autoplay    (int)     — 0 or 1
  *   pause_hover (int)     — 0 or 1
  *
@@ -70,7 +68,6 @@ function wynk_cs_save_slider(): void {
 
 	// Numeric settings — clamped to valid ranges.
 	$speed           = max( 5,   min( 150, absint( $_POST['speed']           ?? 30  ) ) );
-	$curve           = max( 0,   min( 50,  absint( $_POST['curve']           ?? 12  ) ) );
 	$gap             = max( 0,   min( 50,  absint( $_POST['gap']             ?? 10  ) ) );
 	$height          = max( 200, min( 800, absint( $_POST['height']          ?? 400 ) ) );
 	$desktop_visible = max( 3,   min( 12,  absint( $_POST['desktop_visible'] ?? 8   ) ) );
@@ -127,7 +124,6 @@ function wynk_cs_save_slider(): void {
 	// Use the WYNK_CPT constants to keep key strings DRY.
 	update_post_meta( $post_id, WYNK_CPT::META_IMAGES,          wp_json_encode( $images ) );
 	update_post_meta( $post_id, WYNK_CPT::META_SPEED,           $speed );
-	update_post_meta( $post_id, WYNK_CPT::META_CURVE,           $curve );
 	update_post_meta( $post_id, WYNK_CPT::META_GAP,             $gap );
 	update_post_meta( $post_id, WYNK_CPT::META_DIRECTION,       $direction );
 	update_post_meta( $post_id, WYNK_CPT::META_HEIGHT,          $height );

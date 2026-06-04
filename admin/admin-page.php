@@ -167,7 +167,6 @@ function wynk_cs_view_dashboard(): void {
 
 				// ── Settings pills ────────────────────────────────────
 				$speed = (int) get_post_meta( $post_id, WYNK_CPT::META_SPEED, true ) ?: 30;
-				$curve = (int) get_post_meta( $post_id, WYNK_CPT::META_CURVE, true );
 
 				// ── URLs ──────────────────────────────────────────────
 				$edit_url    = admin_url( 'admin.php?page=wynk-curve-slider&view=edit&id=' . $post_id );
@@ -301,7 +300,6 @@ function wynk_cs_view_edit( int $post_id ): void {
 	$slider_title    = '';
 	$images_json     = '[]';
 	$speed           = 30;
-	$curve           = 12;
 	$gap             = 10;
 	$height          = 400;
 	$direction       = 'left';
@@ -324,7 +322,6 @@ function wynk_cs_view_edit( int $post_id ): void {
 		$slider_title    = $post->post_title;
 		$images_json     = get_post_meta( $post_id, WYNK_CPT::META_IMAGES,      true ) ?: '[]';
 		$speed           = (int) ( get_post_meta( $post_id, WYNK_CPT::META_SPEED,       true ) ?: 30  );
-		$curve           = (int) ( get_post_meta( $post_id, WYNK_CPT::META_CURVE,       true ) ?: 12  );
 		$gap             = (int) ( get_post_meta( $post_id, WYNK_CPT::META_GAP,         true ) ?: 10  );
 		$height          = (int) ( get_post_meta( $post_id, WYNK_CPT::META_HEIGHT,      true ) ?: 400 );
 		$direction       =        get_post_meta( $post_id, WYNK_CPT::META_DIRECTION,   true ) ?: 'left';

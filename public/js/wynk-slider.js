@@ -1,8 +1,8 @@
 /**
- * WebGL Curved Image Slider — Frontend Engine
- * Image Curve Slider by WebWynk
+ * WebGL Image Slider — Frontend Engine
+ * Image Slider by WebWynk
  *
- * Renders images on a continuously scrolling curved band using Three.js (r160).
+ * Renders images on a continuously scrolling flat band using Three.js (r160).
  * Runs entirely in an IIFE; exposes only window.wynkCurve.
  *
  * Public API:
@@ -32,9 +32,8 @@
   // ── Resize debounce handle ─────────────────────────────────
   var _resizeTimer = null;
 
-  // ── Shared GLSL shaders (Step 6.4) ───────────────────────
-  // Vertex shader: curves planes by scaling Y based on world-space X distance.
-  // The 'curve' uniform maps 0 → flat, 50 → strongly curved.
+  // ── Shared GLSL shaders ───────────────────────────────────
+  // Flat vertex shader: no curve deformation, images render as plain planes.
   var VERTEX_SHADER = [
     'varying vec2 vUV;',
     'void main() {',
@@ -158,11 +157,8 @@
       el.addEventListener('mouseleave', function () { ctx.paused = false; });
     }
 
-    // ── Step 6.6 — Start animation loop ───────────────────
+    // ── Start animation loop ───────────────────────────────
     animate(ctx);
-
-    // ── Fade overlay width ─────────────────────────────────
-    updateFadeWidth(el, ctx.width);
 
     return ctx;
   }
@@ -239,9 +235,7 @@
       var aspect = clamp(imgH / imgW, 0.9, 1.6);
 
       // ── Geometry ─────────────────────────────────────────
-      // 20×20 segments give the vertex shader enough vertices to
-      // produce a smooth curve without too many triangles.
-      var geo = new THREE.PlaneGeometry(scale, scale * aspect, 20, 20);
+      var geo = new THREE.PlaneGeometry(scale, scale * aspect);
 
       // ── Material ──────────────────────────────────────────
       var isSolid = !imgData.url;
@@ -334,9 +328,6 @@
     ctx.renderer.render(ctx.scene, ctx.camera);
   }
 
-  // ============================================================
-  // Step 6.7 — Resize handler (debounced 150ms)
-  // ============================================================
 
   window.addEventListener('resize', function () {
     clearTimeout(_resizeTimer);
@@ -345,7 +336,7 @@
         var ctx  = _instances[id];
         var newW = ctx.el.clientWidth;
 
-        // Step 6.8: recompute mobile height cap on resize.
+        // Recompute mobile height cap on resize.
         var newH = applyMobileHeightCap(ctx.el, ctx.data.settings.height || 400);
 
         var widthChanged  = newW !== ctx.width;
@@ -361,7 +352,6 @@
           ctx.camera.updateProjectionMatrix();
           ctx.renderer.setSize(newW, newH);
 
-          updateFadeWidth(ctx.el, newW);
           buildPlanes(ctx);
         }
       });
@@ -454,28 +444,6 @@
     var worldH = 2 * Math.tan(vFov / 2) * camera.position.z;
     var worldW = worldH * (el.clientWidth / el.clientHeight);
     return el.clientWidth / worldW; // pixels per world unit
-  }
-
-
-
-  // ============================================================
-  // Helper: updateFadeWidth (Section 11)
-  // ============================================================
-
-  /**
-   * Set the --wynk-fade-width CSS custom property on the wrapper element.
-   * Controls the left/right gradient fade overlay width.
-   *
-   * @param {Element} el
-   * @param {number}  containerWidth
-   */
-  function updateFadeWidth(el, containerWidth) {
-    var fadeWidth;
-    if (containerWidth <= 480)      fadeWidth = 30;
-    else if (containerWidth <= 768) fadeWidth = 50;
-    else                            fadeWidth = 80;
-
-    el.style.setProperty('--wynk-fade-width', fadeWidth + 'px');
   }
 
   // ============================================================

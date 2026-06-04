@@ -19,9 +19,9 @@
  * @since   1.0.0
  */
 
-/* global jQuery, wp, wynkAdminData, THREE, wynkCurve */
+/* global jQuery, wp, wynkAdminData, wynkCurve */
 
-window.WynkAdmin = (function ($, THREE) {
+window.WynkAdmin = (function ($) {
   'use strict';
 
   // ============================================================
@@ -373,7 +373,7 @@ window.WynkAdmin = (function ($, THREE) {
    * Read current form state and return a normalised settings object.
    * Matches the shape expected by the Three.js engine.
    *
-   * @return {{speed:number, curve:number, gap:number, height:number,
+   * @return {{speed:number, gap:number, height:number,
    *           direction:string, autoplay:boolean, pauseHover:boolean}}
    */
   function collectFormValues() {
@@ -381,7 +381,6 @@ window.WynkAdmin = (function ($, THREE) {
 
     return {
       speed:          parseInt(document.getElementById('wynk-speed').value,  10) || 30,
-      curve:          0,
       gap:            parseInt(document.getElementById('wynk-gap').value,    10) || 10,
       height:         parseInt(document.getElementById('wynk-height').value, 10) || 400,
       direction:      dirChecked ? dirChecked.value : 'left',
@@ -425,7 +424,6 @@ window.WynkAdmin = (function ($, THREE) {
       title:           nameEl ? nameEl.value.trim() : '',
       images:          JSON.stringify(state.imageIds),
       speed:           values.speed,
-      curve:           0,
       gap:             values.gap,
       height:          values.height,
       direction:       values.direction,
@@ -910,7 +908,7 @@ window.WynkAdmin = (function ($, THREE) {
     copyShortcode:   copyShortcode,
   };
 
-}(jQuery, typeof THREE !== 'undefined' ? THREE : null));
+}(jQuery));
 
 // ── Bootstrap ────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {

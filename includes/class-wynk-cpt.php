@@ -37,10 +37,7 @@ class WYNK_CPT {
 	/** @var string Scroll speed — integer 5–150. */
 	const META_SPEED = '_wynk_speed';
 
-	/** @var string Curve intensity — integer 0–50. */
-	const META_CURVE = '_wynk_curve';
-
-	/** @var string Gap between images as a % — integer 0–50. */
+	/** @var string Gap between images in pixels — integer 0–50. */
 	const META_GAP = '_wynk_gap';
 
 	/** @var string Scroll direction — 'left' or 'right'. */
@@ -74,7 +71,6 @@ class WYNK_CPT {
 	private static $meta_defaults = array(
 		self::META_IMAGES          => '[]',
 		self::META_SPEED           => 30,
-		self::META_CURVE           => 12,
 		self::META_GAP             => 10,
 		self::META_DIRECTION       => 'left',
 		self::META_HEIGHT          => 400,
@@ -182,14 +178,9 @@ class WYNK_CPT {
 				'description' => 'Scroll speed (5–150).',
 				'default'     => 30,
 			),
-			self::META_CURVE       => array(
-				'type'        => 'integer',
-				'description' => 'Curve intensity (0–50).',
-				'default'     => 12,
-			),
 			self::META_GAP         => array(
 				'type'        => 'integer',
-				'description' => 'Gap between images as a percentage (0–50).',
+				'description' => 'Gap between images in pixels (0–50).',
 				'default'     => 10,
 			),
 			self::META_DIRECTION   => array(
@@ -393,12 +384,11 @@ class WYNK_CPT {
 	 *
 	 * @since  1.0.0
 	 * @param  int $post_id Slider post ID.
-	 * @return array{speed: int, curve: int, gap: int, direction: string, height: int, autoplay: bool, pauseHover: bool}
+	 * @return array{speed: int, gap: int, direction: string, height: int, autoplay: bool, pauseHover: bool}
 	 */
 	public function get_settings( int $post_id ): array {
 		return array(
 			'speed'      => (int) $this->get_meta_value( $post_id, self::META_SPEED ),
-			'curve'      => (int) $this->get_meta_value( $post_id, self::META_CURVE ),
 			'gap'        => (int) $this->get_meta_value( $post_id, self::META_GAP ),
 			'direction'  => (string) $this->get_meta_value( $post_id, self::META_DIRECTION ),
 			'height'     => (int) $this->get_meta_value( $post_id, self::META_HEIGHT ),
@@ -450,11 +440,6 @@ class WYNK_CPT {
 	/** @internal */
 	public function sanitize_meta_value_wynk_speed( $value ): int {
 		return max( 5, min( 150, absint( $value ) ) );
-	}
-
-	/** @internal */
-	public function sanitize_meta_value_wynk_curve( $value ): int {
-		return max( 0, min( 50, absint( $value ) ) );
 	}
 
 	/** @internal */
