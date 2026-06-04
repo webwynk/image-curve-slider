@@ -11,7 +11,6 @@ A high-performance, premium 3D WebGL curved image slider plugin for WordPress. P
 - **Drag-and-Drop Reordering:** Sort and manage images in the WordPress admin panel using standard HTML5 drag-and-drop.
 - **Real-time Live Preview:** Admin panel features a hot-updating live preview canvas that reflects setting changes instantly (speed, curve, gaps) without full-page reloads.
 - **Responsive Heights:** Auto-adapts size to container and automatically caps height on mobile screens (≤480px) to maintain design aesthetics.
-- **Transparent Edge Fades:** Uses modern CSS `mask-image` linear gradients to fade the slider edges to true transparency, blending perfectly with any themed page background.
 - **Performance Optimized:** Debounced resize listener, GPU resource cleanup on destroy, frame-rate independent physics loop using performance delta clamping, and automatic texture minification filtering.
 
 ---

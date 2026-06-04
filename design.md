@@ -309,18 +309,12 @@ WordPress Admin Sidebar
 <!-- Shortcode output -->
 <div id="{instanceId}"
      class="wynk-curve-slider-wrap"
-     style="height:{height}px; --wynk-fade-width:{fadeWidth}px;">
+     style="height:{height}px;">
 
   <canvas class="wynk-curve-canvas"></canvas>
 
 </div>
 ```
-
-### CSS Custom Properties per Instance
-
-| Property | Set By | Used By |
-|---|---|---|
-| `--wynk-fade-width` | JS on init + resize | Fade overlay mask width |
 
 ---
 

@@ -4,9 +4,6 @@
  * Styles the [wynk_slider] shortcode wrapper, canvas, and edge-fade overlays.
  * All selectors scoped to .wynk-curve-slider-wrap to prevent theme conflicts.
  *
- * CSS Custom Properties (set inline by PHP/JS):
- *   --wynk-bg          Background colour for the edge fades (matches slider bg).
- *   --wynk-fade-width  Width of left/right gradient overlays (set by JS per breakpoint).
  *
  * @package WebWynk_Curve_Slider
  * @since   1.0.0
@@ -24,22 +21,6 @@
   /* width:100% lets the element fill its container */
   width:      100%;
   /* height is set inline by PHP (from _wynk_height meta) */
-
-  /* Modern CSS mask to fade edges transparently */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black var(--wynk-fade-width, 80px),
-    black calc(100% - var(--wynk-fade-width, 80px)),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black var(--wynk-fade-width, 80px),
-    black calc(100% - var(--wynk-fade-width, 80px)),
-    transparent 100%
-  );
 }
 
 /* ============================================================
