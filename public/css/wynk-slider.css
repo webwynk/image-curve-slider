@@ -1,0 +1,94 @@
+/**
+ * Frontend CSS — Image Curve Slider by WebWynk
+ *
+ * Styles the [wynk_slider] shortcode wrapper, canvas, and edge-fade overlays.
+ * All selectors scoped to .wynk-curve-slider-wrap to prevent theme conflicts.
+ *
+ * CSS Custom Properties (set inline by PHP/JS):
+ *   --wynk-bg          Background colour for the edge fades (matches slider bg).
+ *   --wynk-fade-width  Width of left/right gradient overlays (set by JS per breakpoint).
+ *
+ * @package WebWynk_Curve_Slider
+ * @since   1.0.0
+ */
+
+/* ============================================================
+   Wrapper
+   ============================================================ */
+
+.wynk-curve-slider-wrap {
+  position:   relative;
+  display:    block;
+  overflow:   hidden;
+  box-sizing: border-box;
+  /* width:100% lets the element fill its container */
+  width:      100%;
+  /* height is set inline by PHP (from _wynk_height meta) */
+}
+
+/* ============================================================
+   Canvas
+   ============================================================ */
+
+.wynk-curve-slider-wrap .wynk-curve-canvas {
+  display: block;
+  width:   100%;
+  height:  100%;
+  /* Prevent browser anti-aliasing artefact on HiDPI */
+  image-rendering: auto;
+}
+
+/* ============================================================
+   Edge-fade overlays
+   (gradient from bg-color to transparent — hides cut-off edges)
+   ============================================================ */
+
+.wynk-curve-slider-wrap .wynk-curve-fade {
+  position:       absolute;
+  top:            0;
+  bottom:         0;
+  width:          var(--wynk-fade-width, 80px);
+  pointer-events: none;   /* clicks pass through to canvas */
+  z-index:        3;
+}
+
+.wynk-curve-slider-wrap .wynk-curve-fade--left {
+  left:       0;
+  background: linear-gradient(
+    to right,
+    var(--wynk-bg, #ffffff) 0%,
+    transparent 100%
+  );
+}
+
+.wynk-curve-slider-wrap .wynk-curve-fade--right {
+  right:      0;
+  background: linear-gradient(
+    to left,
+    var(--wynk-bg, #ffffff) 0%,
+    transparent 100%
+  );
+}
+
+/* ============================================================
+   Responsive — narrow screens
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .wynk-curve-slider-wrap .wynk-curve-fade {
+    width: var(--wynk-fade-width, 50px);
+  }
+}
+
+@media (max-width: 480px) {
+  .wynk-curve-slider-wrap .wynk-curve-fade {
+    width: var(--wynk-fade-width, 30px);
+  }
+}
+
+/* ============================================================
+   Accessibility: respect reduced-motion preference
+   The Three.js rAF loop still runs but motion is a visual effect;
+   no CSS animation needs to be disabled here.
+   Users who need to stop motion can use a browser extension.
+   ============================================================ */

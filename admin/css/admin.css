@@ -1,0 +1,834 @@
+/**
+ * Admin CSS — Image Curve Slider by WebWynk
+ *
+ * Styles the plugin's admin dashboard, create/edit form, live preview panel,
+ * preview modal, image thumbnail grid, and all UI components.
+ *
+ * All selectors scoped to .wynk-admin-wrap to avoid conflicts with WP core styles.
+ *
+ * @package WebWynk_Curve_Slider
+ * @since   1.0.0
+ */
+
+/* ============================================================
+   Root scope + typography reset
+   ============================================================ */
+
+.wynk-admin-wrap {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+  font-size:   14px;
+  color:       #1e1e1e;
+  box-sizing:  border-box;
+}
+
+.wynk-admin-wrap *,
+.wynk-admin-wrap *::before,
+.wynk-admin-wrap *::after {
+  box-sizing: inherit;
+}
+
+/* ============================================================
+   Page header
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-dashboard-header,
+.wynk-admin-wrap .wynk-edit-header {
+  display:     flex;
+  align-items: center;
+  gap:         16px;
+  flex-wrap:   wrap;
+  margin:      16px 0 24px;
+}
+
+.wynk-admin-wrap .wynk-page-title {
+  font-size:   22px;
+  font-weight: 700;
+  color:       #1e1e1e;
+  margin:      0;
+  line-height: 1.2;
+}
+
+.wynk-admin-wrap .wynk-dashboard-header .wynk-btn--lg {
+  margin-left: auto;
+}
+
+.wynk-admin-wrap .wynk-back-link {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            4px;
+  color:          #2271b1;
+  text-decoration: none;
+  font-size:      13px;
+  white-space:    nowrap;
+}
+
+.wynk-admin-wrap .wynk-back-link:hover {
+  color: #135e96;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-btn {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            6px;
+  padding:        7px 14px;
+  font-size:      13px;
+  font-weight:    500;
+  line-height:    1.4;
+  border-radius:  5px;
+  border:         1px solid transparent;
+  cursor:         pointer;
+  text-decoration: none;
+  transition:     background 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  white-space:    nowrap;
+  vertical-align: middle;
+}
+
+.wynk-admin-wrap .wynk-btn:disabled,
+.wynk-admin-wrap .wynk-btn.is-loading {
+  opacity: 0.6;
+  cursor:  not-allowed;
+}
+
+/* Primary */
+.wynk-admin-wrap .wynk-btn--primary {
+  background: #2271b1;
+  color:      #fff;
+  border-color: #2271b1;
+}
+.wynk-admin-wrap .wynk-btn--primary:hover:not(:disabled):not(.is-loading) {
+  background:  #135e96;
+  border-color:#135e96;
+  color:       #fff;
+}
+
+/* Outline */
+.wynk-admin-wrap .wynk-btn--outline {
+  background:   #fff;
+  color:        #2271b1;
+  border-color: #2271b1;
+}
+.wynk-admin-wrap .wynk-btn--outline:hover:not(:disabled) {
+  background: #f0f6fc;
+}
+
+/* Danger */
+.wynk-admin-wrap .wynk-btn--danger {
+  background:   #fff;
+  color:        #b32d2e;
+  border-color: #b32d2e;
+}
+.wynk-admin-wrap .wynk-btn--danger:hover:not(:disabled) {
+  background: #fdf0f0;
+}
+
+/* Ghost */
+.wynk-admin-wrap .wynk-btn--ghost {
+  background:   transparent;
+  color:        #646970;
+  border-color: transparent;
+}
+.wynk-admin-wrap .wynk-btn--ghost:hover {
+  color: #1e1e1e;
+}
+
+/* Sizes */
+.wynk-admin-wrap .wynk-btn--sm  { padding: 4px 10px; font-size: 12px; }
+.wynk-admin-wrap .wynk-btn--lg  { padding: 9px 18px; font-size: 14px; }
+
+/* is-copied state (shortcode copy button) */
+.wynk-admin-wrap .wynk-btn.is-copied {
+  background: #edfaef;
+  color:      #1a7a1e;
+  border-color: #46b450;
+}
+
+/* ============================================================
+   Card grid (dashboard)
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-card-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap:                   20px;
+  margin-top:            8px;
+}
+
+/* Card */
+.wynk-admin-wrap .wynk-card {
+  background:    #fff;
+  border:        1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow:      hidden;
+  transition:    box-shadow 0.2s ease, transform 0.2s ease;
+  display:       flex;
+  flex-direction:column;
+}
+.wynk-admin-wrap .wynk-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.09);
+  transform:  translateY(-2px);
+}
+
+/* Thumbnail */
+.wynk-admin-wrap .wynk-card__thumb-wrap {
+  height:     180px;
+  overflow:   hidden;
+  background: #f5f5f5;
+}
+.wynk-admin-wrap .wynk-card__thumb {
+  width:       100%;
+  height:      100%;
+  object-fit:  cover;
+  display:     block;
+  transition:  transform 0.3s ease;
+}
+.wynk-admin-wrap .wynk-card:hover .wynk-card__thumb {
+  transform: scale(1.03);
+}
+.wynk-admin-wrap .wynk-card__thumb--placeholder {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  color:           #c0c0c0;
+  font-size:       48px;
+}
+
+/* Card body */
+.wynk-admin-wrap .wynk-card__body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap:     10px;
+  flex:    1;
+}
+
+.wynk-admin-wrap .wynk-card__title {
+  font-size:   15px;
+  font-weight: 600;
+  margin:      0;
+  color:       #1e1e1e;
+  white-space: nowrap;
+  overflow:    hidden;
+  text-overflow: ellipsis;
+}
+
+/* Shortcode badge */
+.wynk-admin-wrap .wynk-card__shortcode {
+  display:        flex;
+  align-items:    center;
+  gap:            6px;
+  background:     #f5f5f5;
+  border-radius:  4px;
+  padding:        4px 8px;
+  flex-wrap:      wrap;
+}
+.wynk-admin-wrap .wynk-shortcode-text {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size:   11px;
+  color:       #333;
+  word-break:  break-all;
+  flex:        1;
+}
+.wynk-admin-wrap .wynk-copy-btn {
+  background:   none;
+  border:       1px solid #c0c0c0;
+  border-radius:3px;
+  cursor:       pointer;
+  font-size:    11px;
+  color:        #646970;
+  padding:      2px 6px;
+  display:      inline-flex;
+  align-items:  center;
+  gap:          3px;
+  transition:   border-color 0.15s, color 0.15s;
+  white-space:  nowrap;
+  flex-shrink:  0;
+}
+.wynk-admin-wrap .wynk-copy-btn:hover {
+  border-color: #2271b1;
+  color:        #2271b1;
+}
+
+/* No-images warning badge */
+.wynk-admin-wrap .wynk-card__no-images {
+  font-size:    12px;
+  color:        #8a6200;
+  background:   #fff8e1;
+  border:       1px solid #ffd54f;
+  border-radius:4px;
+  padding:      5px 8px;
+  display:      flex;
+  align-items:  center;
+  gap:          6px;
+}
+
+/* Stat pills */
+.wynk-admin-wrap .wynk-card__stats {
+  display:  flex;
+  gap:      6px;
+  flex-wrap:wrap;
+}
+.wynk-admin-wrap .wynk-pill {
+  background:   #f0f0f0;
+  border:       1px solid #ddd;
+  border-radius:100px;
+  font-size:    11px;
+  padding:      2px 8px;
+  color:        #555;
+  display:      inline-flex;
+  align-items:  center;
+  gap:          3px;
+  white-space:  nowrap;
+}
+
+/* Card action buttons */
+.wynk-admin-wrap .wynk-card__actions {
+  display:  flex;
+  gap:      6px;
+  flex-wrap:wrap;
+  margin-top:auto;
+}
+
+/* ============================================================
+   Empty state (dashboard — no sliders yet)
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-empty-state {
+  text-align:  center;
+  padding:     64px 24px;
+  color:       #646970;
+}
+.wynk-admin-wrap .wynk-empty-state__icon {
+  font-size: 64px;
+  color:     #c0c0c0;
+  margin-bottom: 16px;
+}
+.wynk-admin-wrap .wynk-empty-state__heading {
+  font-size: 20px;
+  color:     #1e1e1e;
+  margin:    0 0 8px;
+}
+.wynk-admin-wrap .wynk-empty-state__desc {
+  font-size: 14px;
+  margin:    0 0 24px;
+}
+
+/* ============================================================
+   Edit layout — two-column (form + preview)
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-edit-layout {
+  display:        flex;
+  flex-direction: column;
+  gap:            24px;
+  margin-top:     8px;
+}
+
+@media (min-width: 1100px) {
+  .wynk-admin-wrap .wynk-edit-layout {
+    flex-direction: row;
+    align-items:    flex-start;
+    gap:            32px;
+  }
+  .wynk-admin-wrap .wynk-settings-panel {
+    width:      420px;
+    flex-shrink:0;
+  }
+  .wynk-admin-wrap .wynk-preview-panel {
+    flex:     1;
+    position: sticky;
+    top:      32px;
+  }
+}
+
+/* ============================================================
+   Settings panel / form
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-settings-panel {
+  background:    #fff;
+  border:        1px solid #e0e0e0;
+  border-radius: 8px;
+  padding:       20px 24px;
+}
+
+/* Sections */
+.wynk-admin-wrap .wynk-section {
+  margin-bottom: 4px;
+}
+.wynk-admin-wrap .wynk-section__heading {
+  font-size:      11px;
+  font-weight:    700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color:          #8c8f94;
+  border-bottom:  1px solid #e0e0e0;
+  padding-bottom: 6px;
+  margin:         24px 0 16px;
+}
+.wynk-admin-wrap .wynk-section:first-child .wynk-section__heading {
+  margin-top: 0;
+}
+
+/* Fields */
+.wynk-admin-wrap .wynk-field {
+  margin-bottom: 16px;
+}
+.wynk-admin-wrap .wynk-field--row {
+  display:     flex;
+  align-items: center;
+  gap:         12px;
+}
+
+.wynk-admin-wrap .wynk-label {
+  display:       block;
+  font-size:     13px;
+  font-weight:   600;
+  color:         #1e1e1e;
+  margin-bottom: 6px;
+}
+.wynk-admin-wrap .wynk-field--row .wynk-label {
+  margin-bottom: 0;
+  min-width:     120px;
+}
+
+.wynk-admin-wrap .wynk-required {
+  color:      #b32d2e;
+  margin-left:2px;
+}
+
+.wynk-admin-wrap .wynk-field__desc {
+  font-size:  12px;
+  color:      #646970;
+  margin:     4px 0 0;
+}
+
+/* Text / number inputs */
+.wynk-admin-wrap input[type="text"].widefat,
+.wynk-admin-wrap input[type="number"].widefat {
+  border-radius: 4px !important;
+}
+
+/* ============================================================
+   Range sliders
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-range-row {
+  margin-bottom: 18px;
+}
+.wynk-admin-wrap .wynk-range-header {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     baseline;
+  margin-bottom:   6px;
+}
+.wynk-admin-wrap .wynk-range-header .wynk-label {
+  margin-bottom: 0;
+}
+.wynk-admin-wrap .wynk-range-value {
+  font-size:    22px;
+  font-weight:  700;
+  color:        #2271b1;
+  min-width:    36px;
+  text-align:   right;
+  line-height:  1;
+}
+.wynk-admin-wrap input[type="range"] {
+  display:       block;
+  width:         100%;
+  accent-color:  #2271b1;
+  cursor:        pointer;
+  margin-bottom: 4px;
+}
+.wynk-admin-wrap .wynk-range-labels {
+  display:         flex;
+  justify-content: space-between;
+  font-size:       11px;
+  color:           #8c8f94;
+}
+
+/* ============================================================
+   Radio buttons
+   ============================================================ */
+
+.wynk-admin-wrap fieldset {
+  border: none;
+  padding: 0;
+  margin:  0;
+}
+.wynk-admin-wrap .wynk-radio-group {
+  display: flex;
+  gap:     16px;
+  flex-wrap: wrap;
+}
+.wynk-admin-wrap .wynk-radio {
+  display:     inline-flex;
+  align-items: center;
+  gap:         6px;
+  cursor:      pointer;
+  font-size:   13px;
+}
+.wynk-admin-wrap .wynk-radio input[type="radio"] {
+  accent-color: #2271b1;
+  width:  16px;
+  height: 16px;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* ============================================================
+   Toggle switch
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-field--toggle {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom:14px;
+  margin-bottom: 14px;
+  justify-content: space-between;
+}
+.wynk-admin-wrap .wynk-field--toggle:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.wynk-admin-wrap .wynk-toggle-label {
+  display:        flex;
+  flex-direction: column;
+  gap:            2px;
+}
+.wynk-admin-wrap .wynk-toggle-label .wynk-label {
+  margin-bottom: 0;
+}
+
+.wynk-admin-wrap .wynk-toggle {
+  position: relative;
+  display:  inline-flex;
+  cursor:   pointer;
+  flex-shrink: 0;
+}
+.wynk-admin-wrap .wynk-toggle__input {
+  /* Visually hidden but accessible */
+  position: absolute;
+  opacity:  0;
+  width:    0;
+  height:   0;
+  margin:   0;
+}
+.wynk-admin-wrap .wynk-toggle__track {
+  display:       block;
+  width:         44px;
+  height:        24px;
+  background:    #c0c0c0;
+  border-radius: 12px;
+  position:      relative;
+  cursor:        pointer;
+  transition:    background 0.2s ease;
+}
+.wynk-admin-wrap .wynk-toggle__track::after {
+  content:       '';
+  position:      absolute;
+  left:          3px;
+  top:           3px;
+  width:         18px;
+  height:        18px;
+  border-radius: 50%;
+  background:    #fff;
+  box-shadow:    0 1px 3px rgba(0, 0, 0, 0.2);
+  transition:    transform 0.2s ease;
+}
+.wynk-admin-wrap .wynk-toggle__input:checked + .wynk-toggle__track {
+  background: #2271b1;
+}
+.wynk-admin-wrap .wynk-toggle__input:checked + .wynk-toggle__track::after {
+  transform: translateX(20px);
+}
+.wynk-admin-wrap .wynk-toggle__input:focus-visible + .wynk-toggle__track {
+  outline:        2px solid #2271b1;
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Image thumbnail grid
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-image-grid {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       8px;
+  margin-top:10px;
+  min-height:40px;
+}
+
+.wynk-admin-wrap .wynk-thumb-empty {
+  color:     #8c8f94;
+  font-size: 12px;
+  font-style:italic;
+  margin:    4px 0 0;
+}
+
+.wynk-admin-wrap .wynk-image-thumb {
+  width:          80px;
+  height:         80px;
+  border-radius:  6px;
+  overflow:       hidden;
+  position:       relative;
+  cursor:         grab;
+  border:         2px solid transparent;
+  transition:     border-color 0.2s, opacity 0.2s, transform 0.15s;
+  background:     #f5f5f5;
+}
+.wynk-admin-wrap .wynk-image-thumb:active {
+  cursor: grabbing;
+}
+.wynk-admin-wrap .wynk-image-thumb.is-dragging {
+  border-color: #2271b1;
+  opacity:      0.55;
+  transform:    scale(0.96);
+}
+.wynk-admin-wrap .wynk-image-thumb.is-drop-target {
+  border-color: #46b450;
+  transform:    scale(1.06);
+}
+.wynk-admin-wrap .wynk-image-thumb img {
+  width:      100%;
+  height:     100%;
+  object-fit: cover;
+  display:    block;
+  pointer-events: none;
+}
+
+/* Drag handle */
+.wynk-admin-wrap .wynk-image-thumb__handle {
+  position:   absolute;
+  bottom:     2px;
+  left:       50%;
+  transform:  translateX(-50%);
+  font-size:  14px;
+  color:      rgba(255, 255, 255, 0.85);
+  text-shadow:0 1px 2px rgba(0, 0, 0, 0.5);
+  line-height:1;
+  pointer-events: none;
+  opacity:    0;
+  transition: opacity 0.15s;
+}
+.wynk-admin-wrap .wynk-image-thumb:hover .wynk-image-thumb__handle {
+  opacity: 1;
+}
+
+/* Remove button */
+.wynk-admin-wrap .wynk-image-thumb__remove {
+  position:     absolute;
+  top:          2px;
+  right:        2px;
+  width:        20px;
+  height:       20px;
+  background:   rgba(0, 0, 0, 0.55);
+  color:        #fff;
+  border:       none;
+  border-radius:50%;
+  font-size:    14px;
+  line-height:  20px;
+  text-align:   center;
+  cursor:       pointer;
+  padding:      0;
+  opacity:      0;
+  transition:   opacity 0.15s, background 0.15s;
+  display:      flex;
+  align-items:  center;
+  justify-content: center;
+}
+.wynk-admin-wrap .wynk-image-thumb:hover .wynk-image-thumb__remove {
+  opacity: 1;
+}
+.wynk-admin-wrap .wynk-image-thumb__remove:hover {
+  background: rgba(179, 45, 46, 0.85);
+}
+
+/* ============================================================
+   Form actions row
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-form-actions {
+  display:    flex;
+  align-items:center;
+  gap:        10px;
+  margin-top: 24px;
+  padding-top:16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* ============================================================
+   Inline notices
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-notice-area {
+  margin-bottom: 8px;
+}
+.wynk-admin-wrap .wynk-notice {
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+  padding:     10px 14px;
+  border-radius:4px;
+  font-size:   13px;
+  line-height: 1.4;
+  animation:   wynk-fadein 0.25s ease;
+  flex-wrap:   wrap;
+}
+.wynk-admin-wrap .wynk-notice--success {
+  background:   #edfaef;
+  border-left:  3px solid #46b450;
+  color:        #1a7a1e;
+}
+.wynk-admin-wrap .wynk-notice--error {
+  background:   #fde8e8;
+  border-left:  3px solid #dc3232;
+  color:        #8a1515;
+}
+.wynk-admin-wrap .wynk-inline-copy-btn {
+  background:    #fff;
+  border:        1px solid currentColor;
+  border-radius: 3px;
+  cursor:        pointer;
+  font-size:     12px;
+  padding:       2px 8px;
+  color:         inherit;
+  display:       inline-flex;
+  align-items:   center;
+  gap:           4px;
+  transition:    opacity 0.15s;
+  margin-left:   auto;
+}
+.wynk-admin-wrap .wynk-inline-copy-btn:hover { opacity: 0.75; }
+
+@keyframes wynk-fadein {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ============================================================
+   Live preview panel (edit view — right column)
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-preview-panel {
+  background:    #f9f9f9;
+  border:        1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow:      hidden;
+}
+.wynk-admin-wrap .wynk-preview-panel__header {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  padding:         10px 14px;
+  background:      #f0f0f0;
+  border-bottom:   1px solid #e0e0e0;
+}
+.wynk-admin-wrap .wynk-preview-panel__title {
+  font-weight: 600;
+  font-size:   12px;
+  color:       #3c434a;
+  display:     inline-flex;
+  align-items: center;
+  gap:         5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.wynk-admin-wrap .wynk-preview-panel__note {
+  font-size:  11px;
+  color:      #8c8f94;
+  font-style: italic;
+}
+.wynk-admin-wrap .wynk-preview-panel__canvas-wrap {
+  position:   relative;
+  overflow:   hidden;
+  width:      100%;
+  transition: height 0.3s ease;
+}
+.wynk-admin-wrap .wynk-preview-canvas {
+  display: block;
+  width:   100%;
+  height:  100%;
+}
+
+/* ============================================================
+   Preview modal (full-screen)
+   ============================================================ */
+
+.wynk-modal {
+  display:          none;
+  position:         fixed;
+  inset:            0;
+  z-index:          999999;
+  background:       rgba(0, 0, 0, 0.85);
+  align-items:      center;
+  justify-content:  center;
+}
+.wynk-modal[aria-hidden="false"] {
+  display: flex;
+}
+
+/* Prevent body scroll when modal is open */
+body.wynk-modal-open {
+  overflow: hidden;
+}
+
+.wynk-modal__inner {
+  width:       90vw;
+  max-width:   1200px;
+  max-height:  90vh;
+  overflow:    auto;
+  border-radius: 8px;
+  background:  #fff;
+  position:    relative;
+  box-shadow:  0 24px 80px rgba(0, 0, 0, 0.4);
+  animation:   wynk-modal-in 0.25s ease;
+}
+@keyframes wynk-modal-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+.wynk-modal__close {
+  position:      fixed;
+  top:           16px;
+  right:         20px;
+  z-index:       10;
+  background:    rgba(255, 255, 255, 0.15);
+  color:         #fff;
+  border:        none;
+  border-radius: 50%;
+  width:         40px;
+  height:        40px;
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  cursor:        pointer;
+  font-size:     22px;
+  transition:    background 0.15s;
+}
+.wynk-modal__close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.wynk-modal-loading,
+.wynk-modal-error {
+  padding: 48px;
+  text-align: center;
+  color: #646970;
+  font-size: 14px;
+}
+
+/* ============================================================
+   No sliders message (shown after all cards are deleted)
+   ============================================================ */
+
+.wynk-admin-wrap .wynk-no-sliders {
+  color:     #646970;
+  font-size: 14px;
+  margin-top:24px;
+}
